@@ -14,29 +14,30 @@ class EntryController <ApplicationController
   end
 
   post '/entries' do
-    @user = User.find_by_slug(params[:slug])
+    # @user = User.find_by_slug(params[:slug])
     @entry = Entry.create(params[:entry])
-    @user.entries << @entry
+    # @user.entries << @entry
 
     redirect '/entries'
 
   end
 
-  get '/entries/:id' do
+  get '/entry/:id' do
+    @entry = Entry.find(params[:id])
 
     erb :"entries/show"
   end
 
-  get '/entries/:id/edit' do
+  get '/entry/:id/edit' do
 
     erb :"entries/edit"
   end
 
-  patch '/entries/:id/edit' do
+  patch '/entry/:id/edit' do
 
   end
 
-  delete '/entries/:id' do
+  delete '/entry/:id' do
 
   end
 

@@ -1,0 +1,10 @@
+<center><h1>Entry #<%=@entry.id%></h1></center>
+
+<fieldset>
+<h2><em><%=@entry.date%></em></h2>
+<p><blockquote><%=@entry.content%></blockquote></p>
+</fieldset>
+
+<br><center>
+<button><a href= "/entry/<%=@entry.id%>/edit">Edit</a></button>
+<button><a href= "/entry/<%=@entry.id%>/delete">Delete</a></button>
