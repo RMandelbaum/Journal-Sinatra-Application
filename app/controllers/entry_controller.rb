@@ -1,46 +1,96 @@
 class EntryController <ApplicationController
 
 
-  get '/entries' do
+    get '/entries' do
 
-    @entries = Entry.all
+        if is_logged_in? && current_user
+          @user = User.find(session[:user_id])
+          #new code to show only user's entries
+          erb :"entries/index"
+        else
+          redirect '/users/login'
+        end
+    end
 
-    erb :"entries/index"
+    get '/entries/new' do
+
+        if is_logged_in && @entry.user_id == current_user.id
+          @user = User.find_by(params[:user])
+
+          erb :"entries/new"
+        else
+          redirect "/users/login"
+        end
+    end
+
+    post '/entries' do
+
+      @user = current_user
+      @entry = Entry.new(date: params[:date], content: params[:contnet], user_id: @user.id)
+        if @entry.content.empty? || @entry.date.empty?
+          redirect "/entries/new"
+        end
+
+        if @entry.save
+          redirect "/entries"
+        else
+          redirect '/users/login'
+        end
+
+      # @user.entries << @entry
+    end
+
+    get '/entry/:id' do
+
+      @entry = Entry.find_by_id(params[:id])
+        if is_logged_in? && @entry.user == current_user
+
+            erb :"entries/show"
+        else
+          redirect "users/login"
+        end
+
+    end
+
+    get '/entry/:id/edit' do
+
+      @entry = Entry.find(params[:id])
+        if is_logged_in? && @entry.user == current_user
+          erb :"entries/edit"
+        else
+          redirect "users/login"
+        end
+    end
+
+    patch '/entry/:id/edit' do
+
+      @entry = Entry.find_by_id(params[:id])
+
+        if params[:content].empty? || params[:date].empty?
+          redirect to "/entry/#{@entry.id}/edit"
+
+        elsif is logged_in? && @entry.user_id == current_user.id
+          @entry.update(date: params[:date], content: params[:content])
+
+          redirect to "/entries"
+
+        else
+
+          redirect to "/users/login"
+        end
+    end
+
+    delete '/entry/:id' do
+
+      @entry = Entry.find(params[:id])
+        if is_logged_in? && @entry.user_id == current_user.id
+          @entry.delete
+        end
+
+      redirect to "/entries"
+
+    end
+
+
+
   end
-
-  get '/entries/new' do
-
-    erb :"entries/new"
-  end
-
-  post '/entries' do
-    # @user = User.find_by_slug(params[:slug])
-    @entry = Entry.create(params[:entry])
-    # @user.entries << @entry
-
-    redirect '/entries'
-
-  end
-
-  get '/entry/:id' do
-    @entry = Entry.find(params[:id])
-
-    erb :"entries/show"
-  end
-
-  get '/entry/:id/edit' do
-
-    erb :"entries/edit"
-  end
-
-  patch '/entry/:id/edit' do
-
-  end
-
-  delete '/entry/:id' do
-
-  end
-
-
-
-end

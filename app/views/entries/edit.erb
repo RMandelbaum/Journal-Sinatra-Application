@@ -1,0 +1,8 @@
+<h2>Edit Entry #<%=@entry.id %></h2>
+
+<form action = "/entry/<%=@entry.id" method = "post">
+  <input id = "hidden" type= "hidden" name="_method" value= "patch">
+  <input type = "date" name= "entry[date]">
+  <input type = "content" name= "entry[content]">
+  <input type = "submit" value = "Edit">
+</form>

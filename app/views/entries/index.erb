@@ -1,6 +1,6 @@
 <h1>Your Journal</h1>
 <ul>
-<%@entries.each do |e| %>
+<%@user.entries.each do |e| %>
   <li><a href="/entry/<%=e.id%>"><%= e.date %></a></li>
 <%end%>
 <ul>
