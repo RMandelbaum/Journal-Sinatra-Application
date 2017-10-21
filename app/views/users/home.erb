@@ -1,0 +1,8 @@
+<center><fieldset>
+<button><a href= "/entries">View Entries</a></button>
+<button><a href= "/entries/new">New Entry</a></button>
+<button><a href= "/users/<%=@user.slug%>/logout">Logout</a></button>
+
+
+<h1>You currently have <%=@user.entries.count %> entries.</h1>
+</fieldset></center>

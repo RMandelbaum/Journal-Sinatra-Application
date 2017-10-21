@@ -3,6 +3,8 @@ class EntryController <ApplicationController
 
   get '/entries' do
 
+    @entries = Entry.all
+
     erb :"entries/index"
   end
 
@@ -12,6 +14,9 @@ class EntryController <ApplicationController
   end
 
   post '/entries' do
+    @user = User.find_by_slug(params[:slug])
+    @entry = Entry.create(params[:entry])
+    @user.entries << @entry
 
     redirect '/entries'
 

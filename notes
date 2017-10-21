@@ -1,0 +1,31 @@
+Online Journal
+
+User model
+  :username
+  :email
+  :password
+has_many :entries
+Validates presence and uniqueness of
+Username
+Email
+Has secure Password
+
+Entry model
+  :date
+  :content
+  :user_id
+
+belongs_to :user
+Date
+Content
+
+User controller
+/signup
+/login
+/logout
+
+Entry controller
+/entry/new
+/entry/1
+/entry/1/edit
+/entry/1/delete
