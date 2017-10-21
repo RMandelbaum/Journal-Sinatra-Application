@@ -27,14 +27,10 @@ class EntryController <ApplicationController
 
       @user = current_user
       @entry = Entry.new(date: params[:entry][:date], content: params[:entry][:content], user_id: @user.id)
-        if @entry.content.empty? || @entry.date.empty?
-          redirect "/entries/new"
-        end
-
         if @entry.save
           redirect "/entries"
         else
-          redirect '/users/login'
+          redirect '/entries/new'
         end
 
       # @user.entries << @entry

@@ -4,7 +4,7 @@ class UserController < ApplicationController
   get '/users/signup' do
 
     @users = User.all
-      if is_logged_in?
+      if is_logged_in? && current_user
 
         redirect to "/users/#{@user.slug}"
       else
@@ -25,7 +25,7 @@ class UserController < ApplicationController
    end
 
   get '/users/login' do
-    if is_logged_in? && curent_user
+    if is_logged_in? && current_user
       redirect to "users/#{@user.slug}"
     else
 
@@ -54,13 +54,15 @@ class UserController < ApplicationController
 
   get '/users/:slug' do
     @user = User.find_by_slug(params[:slug])
+      if is_logged_in? && @user.id == session[:user_id]
 
+        erb :"users/home"
+      else
 
+        erb :"users/error"
 
-    # if @user.id !=nil && @user.id==@entry.user_id
+        redirect "/users/login"
 
-    erb :"users/home"
-
-
+      end
   end
 end
