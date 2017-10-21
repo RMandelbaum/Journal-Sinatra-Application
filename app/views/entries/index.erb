@@ -1,6 +1,10 @@
-<h1>Your Journal</h1>
+<h1>Your Journal Entries</h1>
+<fieldset>
 <ul>
 <%@user.entries.each do |e| %>
   <li><a href="/entry/<%=e.id%>"><%= e.date %></a></li>
 <%end%>
 <ul>
+</fieldset>
+<br>
+<center><button><a href = "/users/<%=@user.slug%>">HOME</a></button></center>

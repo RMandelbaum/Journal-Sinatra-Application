@@ -1,8 +1,13 @@
-<center><fieldset>
+<center><h1><%=@user.username%>'s Journal</h1>
+
+<fieldset>
+
+
+
+  <h3>You currently have <%=@user.entries.count %> entries.</h3>
+</fieldset>
+<br>
 <button><a href= "/entries">View Entries</a></button>
 <button><a href= "/entries/new">New Entry</a></button>
 <button><a href= "/users/<%=@user.slug%>/logout">Logout</a></button>
-
-
-<h1>You currently have <%=@user.entries.count %> entries.</h1>
-</fieldset></center>
+</center>

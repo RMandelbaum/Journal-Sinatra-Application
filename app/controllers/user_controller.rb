@@ -20,7 +20,7 @@ class UserController < ApplicationController
         session[:user_id] = @user.id
         redirect "users/#{@user.slug}"
       else
-        redirect to '/signup'
+        redirect to '/users/signup'
       end
    end
 
@@ -54,7 +54,7 @@ class UserController < ApplicationController
 
   get '/users/:slug' do
     @user = User.find_by_slug(params[:slug])
-    
+
 
 
     # if @user.id !=nil && @user.id==@entry.user_id

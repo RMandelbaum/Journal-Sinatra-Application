@@ -14,7 +14,7 @@ class EntryController <ApplicationController
 
     get '/entries/new' do
 
-        if is_logged_in && @entry.user_id == current_user.id
+        if is_logged_in? && current_user
           @user = User.find_by(params[:user])
 
           erb :"entries/new"
@@ -26,7 +26,7 @@ class EntryController <ApplicationController
     post '/entries' do
 
       @user = current_user
-      @entry = Entry.new(date: params[:date], content: params[:contnet], user_id: @user.id)
+      @entry = Entry.new(date: params[:entry][:date], content: params[:entry][:content], user_id: @user.id)
         if @entry.content.empty? || @entry.date.empty?
           redirect "/entries/new"
         end
@@ -62,15 +62,15 @@ class EntryController <ApplicationController
         end
     end
 
-    patch '/entry/:id/edit' do
+    patch '/entry/:id' do
 
       @entry = Entry.find_by_id(params[:id])
 
-        if params[:content].empty? || params[:date].empty?
+        if params[:entry][:content].empty? || params[:entry][:date].empty?
           redirect to "/entry/#{@entry.id}/edit"
 
-        elsif is logged_in? && @entry.user_id == current_user.id
-          @entry.update(date: params[:date], content: params[:content])
+        elsif is_logged_in? && @entry.user_id == current_user.id
+          @entry.update(params[:entry])
 
           redirect to "/entries"
 
