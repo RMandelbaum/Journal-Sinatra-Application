@@ -4,18 +4,21 @@ class ApplicationController < Sinatra::Base
   set :views, Proc.new { File.join(root, "../views/") }
   enable :sessions
 
-  get '/' do
 
-    erb :'home'
+        get '/' do
+
+          erb :'home'
+
+        end
+
+        helpers
+
+          def current_user
+            @user = User.find_by_id(session[:user_id])
+          end
+
+          def is_logged_in?
+            !!session[:user_id]
+          end
 
   end
-
-  def current_user
-    @user = User.find_by_id(session[:user_id])
-  end
-  def is_logged_in?
-    !!session[:user_id]
-  end
-
-  
-end

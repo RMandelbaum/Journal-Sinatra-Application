@@ -1,69 +1,78 @@
+require 'rack-flash'
+
 class EntryController <ApplicationController
+  use Rack::Flash
 
 
     get '/entries' do
+      @user = User.find(session[:user_id])
 
-        if is_logged_in? && current_user
-          @user = User.find(session[:user_id])
-          #new code to show only user's entries
+        if is_logged_in? && current_user.id == @user.id
           erb :"entries/index"
         else
-          redirect '/users/login'
+          flash[:message] = "You can't access this page!"
+          redirect '/login'
         end
     end
 
     get '/entries/new' do
 
         if is_logged_in? && current_user
-          @user = User.find_by(params[:user])
+          @user = User.find_by(username: params[:username])
 
           erb :"entries/new"
         else
-          redirect "/users/login"
+          flash[:message] = "You can't access this page!"
+          redirect "/login"
         end
     end
 
     post '/entries' do
 
       @user = current_user
-      @entry = Entry.new(date: params[:entry][:date], content: params[:entry][:content], user_id: @user.id)
+      @entry = current_user.entries.new(date: params[:entry][:date], content: params[:entry][:content], user_id: @user.id)
         if @entry.save
+
           redirect "/entries"
         else
+          flash[:message] = "You must fill in all fields!"
+
           redirect '/entries/new'
         end
 
       # @user.entries << @entry
     end
 
-    get '/entry/:id' do
+    get '/entries/:id' do
 
       @entry = Entry.find_by_id(params[:id])
         if is_logged_in? && @entry.user == current_user
 
             erb :"entries/show"
         else
-          redirect "users/login"
+          flash[:message] = "You can't access this page!"
+          redirect "/login"
         end
 
     end
 
-    get '/entry/:id/edit' do
+    get '/entries/:id/edit' do
 
       @entry = Entry.find(params[:id])
         if is_logged_in? && @entry.user == current_user
           erb :"entries/edit"
         else
-          redirect "users/login"
+          flash[:message] = "You can't access this page!"
+          redirect "/login"
         end
     end
 
-    patch '/entry/:id' do
+    patch '/entries/:id' do
 
       @entry = Entry.find_by_id(params[:id])
 
         if params[:entry][:content].empty? || params[:entry][:date].empty?
-          redirect to "/entry/#{@entry.id}/edit"
+          redirect to "/entries/#{@entry.id}/edit"
 
         elsif is_logged_in? && @entry.user_id == current_user.id
           @entry.update(params[:entry])
@@ -71,12 +80,12 @@ class EntryController <ApplicationController
           redirect to "/entries"
 
         else
-
-          redirect to "/users/login"
+          flash[:message] = "You must fill in all fields!"
+          redirect to "/login"
         end
     end
 
-    delete '/entry/:id' do
+    delete '/entries/:id' do
 
       @entry = Entry.find(params[:id])
         if is_logged_in? && @entry.user_id == current_user.id

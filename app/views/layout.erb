@@ -5,12 +5,14 @@
     <title></title>
   </head>
   <body>
-    <center>
-      <h1>Journal Cloud</h1>
-
-      <h3><em>A place to keep your thoughts, ideas, and dreams</em></h3>
-    </center>
-
-    <%= yield %>
+      <center>
+        <h1>Journal Cloud</h1>
+        <h3><em>A place to keep your thoughts, ideas, and dreams</em></h3>
+      </center>
+        <% if flash.has?(:message) %>
+            <center><h1 style = "color:red;"><%= flash[:message] %></h1></center>
+        <% else %>
+           <%= yield %>
+        <% end %>
   </body>
 </html>

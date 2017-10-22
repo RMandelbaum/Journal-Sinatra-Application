@@ -1,15 +1,18 @@
 <h1>Entry #<%=@entry.id%></h1>
 
 <fieldset>
-<h2><em><%=@entry.date%></em></h2>
-<p><blockquote><%=@entry.content%></blockquote></p>
+  <h2><em><%=@entry.date%></em></h2>
+  <p><blockquote><%=@entry.content%></blockquote></p>
+
+  <button><a href= "/entries/<%=@entry.id%>/edit">Edit</a></button>
+  <br><br>
+  <form action ="/entries/<%=@entry.id%>" method="post">
+    <input id = "hidden" type="hidden" name="_method" value="delete">
+    <input type="submit" name="Delete Entry" value="Delete">
+  </form>
+
 </fieldset>
 
-<br><center>
-<button><a href= "/entry/<%=@entry.id%>/edit">Edit</a></button>
+<br>
 
-<form action ="/entry/<%=@entry.id%>" method="post">
-<input id = "hidden" type="hidden" name="_method" value="delete">
-  <input type="submit" name="Delete Entry" value="Delete">
-</form>
 <center><button><a href = "/users/<%=@user.slug%>">HOME</a></button></center>

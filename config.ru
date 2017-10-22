@@ -8,4 +8,5 @@ use Rack::MethodOverride
 use UserController
 use EntryController
 
+
 run ApplicationController

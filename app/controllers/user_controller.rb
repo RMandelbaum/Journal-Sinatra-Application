@@ -1,10 +1,12 @@
+require 'rack-flash'
+
 class UserController < ApplicationController
+  use Rack::Flash
 
-
-  get '/users/signup' do
+  get '/signup' do
 
     @users = User.all
-      if is_logged_in? && current_user
+      if is_logged_in?
 
         redirect to "/users/#{@user.slug}"
       else
@@ -14,55 +16,56 @@ class UserController < ApplicationController
       end
     end
 
-  post '/users/signup' do
-    @user = User.new(params[:user])
+  post '/signup' do
+    @user = User.new(username: params[:username], email: params[:email], password: params[:password])
       if @user.save
         session[:user_id] = @user.id
-        redirect "users/#{@user.slug}"
+        redirect "/users/#{@user.slug}"
       else
-        redirect to '/users/signup'
+        flash[:message] = "Fill in all fields. Refresh to Signup."
+
+        redirect to '/signup'
       end
    end
 
-  get '/users/login' do
+  get '/login' do
     if is_logged_in? && current_user
-      redirect to "users/#{@user.slug}"
+      redirect to "/users/#{@user.slug}"
     else
-
     erb :"users/login"
     end
   end
 
-  post '/users/login' do
-    @user = User.find_by(username: params[:username])
+  post '/login' do
+      @user = User.find_by(username: params[:username])
       if @user && @user.authenticate(params[:password])
         session[:user_id]= @user.id
-        redirect "users/#{@user.slug}"
+        redirect "/users/#{@user.slug}"
       else
-        redirect "/users/login"
+        flash[:message] = "You must fill in all fields. Refresh to Login."
+
+        redirect "/login"
       end
   end
 
 
-  get '/users/:slug/logout' do
-    @user = User.find_by_slug(params[:slug])
-    if is_logged_in?
-        session.clear
-        redirect "/users/login"
-      end
-    end
+  get '/logout' do
+      if is_logged_in?
+         session.destroy
+         redirect to '/login'
+       else
+         redirect to '/'
+       end
+     end
 
   get '/users/:slug' do
-    @user = User.find_by_slug(params[:slug])
+      @user = User.find_by_slug(params[:slug])
       if is_logged_in? && @user.id == session[:user_id]
 
         erb :"users/home"
       else
 
-        erb :"users/error"
-
-        redirect "/users/login"
-
+        flash[:message] = "You can't access this page!"
       end
   end
 end
