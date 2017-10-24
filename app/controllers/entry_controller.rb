@@ -5,7 +5,8 @@ class EntryController <ApplicationController
 
 
     get '/entries' do
-      @user = User.find(session[:user_id])
+        @user = User.find(session[:user_id])
+  
 
         if is_logged_in? && current_user.id == @user.id
           erb :"entries/index"

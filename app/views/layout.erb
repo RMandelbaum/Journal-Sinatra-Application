@@ -11,8 +11,7 @@
       </center>
         <% if flash.has?(:message) %>
             <center><h1 style = "color:red;"><%= flash[:message] %></h1></center>
-        <% else %>
-           <%= yield %>
         <% end %>
+        <%= yield %>
   </body>
 </html>

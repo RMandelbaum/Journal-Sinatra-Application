@@ -29,7 +29,7 @@ class UserController < ApplicationController
    end
 
   get '/login' do
-    if is_logged_in? && current_user
+    if current_user #&& is_logged_in?
       redirect to "/users/#{@user.slug}"
     else
     erb :"users/login"
@@ -66,6 +66,7 @@ class UserController < ApplicationController
       else
 
         flash[:message] = "You can't access this page!"
+        redirect '/entries'
       end
   end
 end

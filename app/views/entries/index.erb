@@ -1,10 +1,10 @@
 <h1>Your Journal Entries</h1>
 <fieldset>
-  <ul>
-    <%@user.entries.each do |e| %>
-      <li><a href="/entries/<%=e.id%>"><%= e.date %></a></li>
+  <ol>
+    <%@user.entries.sort.each do |e| %>
+      <li><a href="/entries/<%=e.id%>"><%= e.date.strftime("%b, %d, %Y") %></a></li>
     <%end%>
-  <ul>
+  <ol>
 </fieldset>
 <br>
 

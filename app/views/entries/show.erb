@@ -1,7 +1,5 @@
-<h1>Entry #<%=@entry.id%></h1>
-
 <fieldset>
-  <h2><em><%=@entry.date%></em></h2>
+  <h2><em><%=@entry.date.strftime("%b, %d, %Y")%></em></h2>
   <p><blockquote><%=@entry.content%></blockquote></p>
 
   <button><a href= "/entries/<%=@entry.id%>/edit">Edit</a></button>
