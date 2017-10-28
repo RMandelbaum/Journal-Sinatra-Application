@@ -1,7 +1,7 @@
 <center>
-  <h1><%=@user.username%>'s Journal</h1>
+  <h1><%=current_user.username%>'s Journal</h1>
     <fieldset>
-        <h3>You currently have <%=@user.entries.count %> entries.</h3>
+        <h3>You currently have <%=current_user.entries.count %> entries.</h3>
     </fieldset>
 
     <br>

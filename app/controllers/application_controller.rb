@@ -5,20 +5,20 @@ class ApplicationController < Sinatra::Base
   enable :sessions
 
 
-        get '/' do
+  get '/' do
 
-          erb :'home'
-
-        end
-
-        helpers
-
-          def current_user
-            @user = User.find_by_id(session[:user_id])
-          end
-
-          def is_logged_in?
-            !!session[:user_id]
-          end
+    erb :'home'
 
   end
+
+  helpers do
+    def current_user #=> User Instance || nil
+      @current_user ||= User.find_by_id(session[:user_id])
+    end
+
+    def is_logged_in?
+      !!current_user
+    end
+  end
+
+end
